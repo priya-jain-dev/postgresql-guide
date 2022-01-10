@@ -52,8 +52,7 @@
     
     1. `JSON` is stored in its plain text format, while `JSONB` is stored in some binary representation.
     2. `JSON` stores white space and that is why we can see spaces when key "a" is stored, while `JSONB` does not.
-    
-     3.   `JSON` **stores all** the values of a key. This is the reason you can see multiple values (2     and 1) against the key "a", while `JSONB` only **stores the last value**.
+    3.   `JSON` **stores all** the values of a key. This is the reason you can see multiple values (2     and 1) against the key "a", while `JSONB` only **stores the last value**.
     
     1. `JSON` maintains the order in which elements are inserted, while `JSONB` maintains the "sorted" order.
     2. `JSONB` objects are stored as a **decompressed binary** as opposed to **raw data** in `JSON`, where no reparsing of data is required during retrieval.
@@ -65,19 +64,26 @@
 
 ### **How to use JSONB?**
     1. **Creating a DB and a Table**
+
     ```sql
     CREATE TABLE books (
         book_id serial NOT NULL,
         data JSONB
     );
+    -- CREATE TABLE
+    
     ```
-    2. ***Populating the DB***
+
+    2. **Populating the DB**
     PostgreSQL automatically validates the input to make sure what you are adding is valid JSON.
+    
     ```sql
-    INSERT INTO books VALUES 
+     INSERT INTO books VALUES 
 	(1, '{"title": "Atomic Habits","genres": ["Productivity", "Non-Fiction"], "authors": ["James Clear"],"published": true}'),
 	(2, '{"title": "The Psychology of Money","genres": ["Mindset", "Non-Fiction"], "authors": ["Morgan Housel"],"published": false}');
+    -- Inserted Row (0,2)
     ```
+    
     3. **Querying JSON**
     The easiest way to traverse the hierarchy of a JSON object is by using pointer symbols.
     ```sql
