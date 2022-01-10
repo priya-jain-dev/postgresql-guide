@@ -63,8 +63,7 @@
     2. If you do a lot of operations on the JSON value in PostgreSQL, or use indexing on some JSON field, you should use `JSONB`.
 
 ### **How to use JSONB?**
-    1. **Creating a DB and a Table**
-
+1. **Creating a DB and a Table**
     ```sql
     CREATE TABLE books (
         book_id serial NOT NULL,
@@ -74,17 +73,17 @@
     
     ```
 
-    2. **Populating the DB**
+2. **Populating the DB**
     PostgreSQL automatically validates the input to make sure what you are adding is valid JSON.
     
     ```sql
-     INSERT INTO books VALUES 
+    INSERT INTO books VALUES 
 	(1, '{"title": "Atomic Habits","genres": ["Productivity", "Non-Fiction"], "authors": ["James Clear"],"published": true}'),
 	(2, '{"title": "The Psychology of Money","genres": ["Mindset", "Non-Fiction"], "authors": ["Morgan Housel"],"published": false}');
     -- Inserted Row (0,2)
     ```
     
-    3. **Querying JSON**
+3. **Querying JSON**
     The easiest way to traverse the hierarchy of a JSON object is by using pointer symbols.
     ```sql
     SELECT id, data->'title' AS title FROM books;
@@ -97,13 +96,13 @@
     ```
     > **-> operator returns values out of JSON columns in JSON format**
 
-    4. **Filter Results**
+4. **Filter Results**
     You may also filter a result set no differently as you normally would, using the WHERE clause but through JSON keys:
     ```sql
     SELECT * FROM books WHERE data->'published' = 'false';
     ```
     Which in this case returns the raw JSON data:
-    ```
+    ```sql
         book_id |                                              data
     ---------+-------------------------------------------------------------------------------------------------------------------------
         2 | {"title": "The Psychology of Money", "genres": ["Mindset", "Non-Fiction"], "authors": ["Morgan Housel"],"published": false}
