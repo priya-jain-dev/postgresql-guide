@@ -2,6 +2,8 @@
 
 1. [What is Window Functions?](#what-is-window-functions)
 2. [Difference between Aggregate Functions vs. Window Functions](#difference-between-aggregate-functions-vs-window-functions)
+3. [Syntax and basic setup](#syntax-and-basic-setup)
+4. [Over() and Partition by](#over()-and-partition-by)
 ### **What is `Window Functions`?**
 Window Functions compute their result based on a sliding window frame, a set of rows that are somehow related to the current row.
 ![](./images/window-function.png) 
@@ -33,7 +35,6 @@ A window function call always contains an `OVER` clause.
 
 **Window Frame:** is a set of rows that are somehow related to the current row. The window frame is evaluated separately within each partition.
 
-
 **Create table**
 
 ```sql
@@ -60,6 +61,8 @@ INSERT INTO sales VALUES
     (8, 1, 'India', 'Pune', 300),
     (9, 2, 'India', 'Pune', 500),
 ```
+### **Over() and Partition by**
+
 **Select query for sum of sold**
 
 `OVER()` - if over is used means window function was used.
