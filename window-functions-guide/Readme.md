@@ -4,6 +4,7 @@
 2. [Difference between Aggregate Functions vs. Window Functions](#difference-between-aggregate-functions-vs-window-functions)
 3. [Syntax and basic setup](#syntax-and-basic-setup)
 4. [Over() and Partition by](#over()-and-partition-by)
+5. [the Order by](#the-order-by)
 ### **What is `Window Functions`?**
 Window Functions compute their result based on a sliding window frame, a set of rows that are somehow related to the current row.
 ![](./images/window-function.png) 
@@ -105,7 +106,7 @@ Result -
 ------------+-----+------+-----
 city        |month| sold | total
 ------------+-----+------+-----
-Indore	    | 1	  | 300	 | 800
+Indore      | 1	  | 300	 | 800
 Indore	    | 2	  | 500	 | 800
 London	    | 1	  | 100	 | 500
 London	    | 2	  | 400	 | 500
@@ -114,6 +115,52 @@ Paris	    | 1	  | 200	 | 1200
 Paris	    | 2	  | 300	 | 1200
 Pune	    | 1	  | 100	 | 200
 Pune	    | 2	  | 100	 | 200
+```
+### **The `ORDER BY`**
+The `ORDER BY` clause is used when ranking or ordering the data. It can be a standalone clause within the window function or paired with the PARTITION BY clause. 
+
+```sql
+
+SELECT city, sold, month, 
+	SUM(sold) OVER(ORDER BY month ASC) 
+FROM sales;
+
+------------+------+-----+------
+city        |sold  |month| total
+------------+------+-----+------
+Indore      | 300  |  1  | 700
+London      | 100  |  1  | 700
+Paris       | 200  |  1  | 700
+Pune        | 100  |  1  | 700
+Pune        | 100  |  2  | 2000
+Indore      | 500  |  2  | 2000
+Paris       | 300  |  2  | 2000
+London      | 400  |  2  | 2000
+Paris       | 700  |  3  | 2700
+```
+Default `ORDER BY`: With no ORDER BY clause, the order of rows within each partition is arbitrary.
+
+The `PARTITION BY` & `ORDER BY`
+After examining the mechanics of PARTITION BY and ORDER BY separately, pairing these two components is the next step. The PARTITION BY creates subgroups (or partitions) based on the chosen column or set of columns. The ORDER BY organizes the data in ascending or descending order. 
+
+```sql
+SELECT city, sold, month, 
+	SUM(sold) OVER(partition by city ORDER BY month ASC) 
+FROM sales;
+
+------+-------+-----+-------+
+month | city  | sold | total
+------+-------+-----+-------+
+ 1    | Indore| 300  | 800
+ 2    | Indore| 500  | 800
+ 1    | London| 100  | 500
+ 2    | London| 400  | 500
+ 1    | Paris | 200  | 1200
+ 2    | Paris | 300  | 1200
+ 3    | Paris | 700  | 1200
+ 1    | Pune  | 100  | 200
+ 2    | Pune  | 100  | 200
+
 ```
 
 
